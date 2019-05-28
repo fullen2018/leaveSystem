@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>修改密码</title>
+<link href="../css/style.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../resource/bootstrap-3.3.7-dist/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<!-- js -->
+    <script src="../resource/js/jquery.min.js"></script>
+<!-- //js -->
+<!-- for-mobile-apps -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+		function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- //for-mobile-apps -->
+<!-- start-smoth-scrolling -->
+<script type="text/javascript" src="../js/move-top.js"></script>
+<script type="text/javascript" src="../js/easing.js"></script>
+<script type="text/javascript" src="../js/restPw.js"></script>
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		$(".scroll").click(function(event){		
+			event.preventDefault();
+			$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+		});
+	});
+</script>
+<!-- start-smoth-scrolling -->
+</head>
+	
+<body>
+	<div class="psd">
+	<div class="container">
+<!-- header -->
+		<div class="header">
+			<div class="logo">
+				<h1 id="title">密码修改中心</h1>
+			</div>
+			<div class="clearfix"> </div>
+				<!-- script for menu -->
+					<script> 
+						$( "span.menu" ).click(function() {
+						$( "ul.nav1" ).slideToggle( 300, function() {
+						 // Animation complete.
+						});
+						});
+					</script>
+				<!-- //script for menu -->
+		</div>
+<!-- //header -->
+<!-- blog -->
+	<div class="blog" style="height: 650px;">
+		<div class="blog-left">
+			<div class="blog-left-info">
+
+				<div class="form-group">
+					<label for="password">设置密码</label>
+					<input type="password" name="password" class="form-control" id="password" placeholder="设置密码">
+				</div>
+				<div class="form-group">
+					<label for="repassword">再次输入密码</label>
+					<input type="password" name="repassword" class="form-control" id="repassword" placeholder="再次输入密码">
+				</div>
+				<div class="modal-footer" style="text-align: left">
+					<button type="button" id="back_btn" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>返回</button>
+					<button type="button" id="btn_submit" class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="clearfix"> </div>
+
+	</div>
+<!-- //blog -->
+<!-- footer -->
+	<div class="footer">
+		<div class="footer-left">
+			<ul>
+				<li><a href="#"></a><span> |</span></li>
+				<li><p>提供优质的请假服务 <span>0800 (123) 4567 </span></p></li>
+			</ul>
+		</div>
+		<div class="footer-right">
+			<p>Copyright &copy; 2019.NiXteam.</p>
+		</div>
+		<div class="clearfix"> </div>
+	</div>
+<!-- //footer -->
+	</div>
+	</div>
+<!-- here stars scrolling icon -->
+	<script type="text/javascript">
+		$(document).ready(function() {
+			/*
+			var defaults = {
+				containerID: 'toTop', // fading element id
+				containerHoverID: 'toTopHover', // fading element hover id
+				scrollSpeed: 1200,
+				easingType: 'linear'
+			};
+			*/
+
+			$().UItoTop({ easingType: 'easeOutQuart' });
+
+		});
+	</script>
+<!-- //here ends scrolling icon -->
+</body>
+<style>
+	#title{
+		color: #F9A801;
+		margin-left: 20px;
+	}
+</style>
+</html>

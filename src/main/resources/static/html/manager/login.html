@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>管理员登录</title>
+    <script src="../../resource/js/jquery.min.js"></script>
+    <link href="../../css/loginStyle.css" rel="stylesheet" type="text/css" media="all" />
+</head>
+<body>
+<div class="htmleaf-container">
+    <div id="wrapper" class="login-page">
+        <div id="login_form" class="form">
+            <form class="login-form">
+                <input type="text" placeholder="职工号" id="no"/>
+                <input type="password" placeholder="密码" id="password"/>
+            </form>
+            <button id="login">登　录</button>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    //清除
+    var storage=window.localStorage;
+    storage.clear();
+
+    var loginUrl = "/manager/login";
+    $(document).ready(function () {
+
+        $("#login").click(function () {
+            var no = $("#no").val();
+            var password = $("#password").val();
+            if(name != null && password != null){
+                $.ajax({
+                    type: "post",
+                    url: loginUrl,
+                    data: {
+                        "id": no,
+                        "password": password,
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data);
+                        if(data.data == 1){
+                            window.location.href="/html/manager/manager.html";
+                        }
+                        else{
+                            alert("登录失败");
+                        }
+                    },
+                    error: function () {
+                        alert("连接失败");
+                    }
+                });
+            }
+            else {
+                alert("请按正确格式填写账号和密码！");
+            }
+        })
+    })
+</script>
+</body>
+</html>

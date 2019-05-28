@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.develop.leave.dao.mapper.StudentMapper">
+  <resultMap id="BaseResultMap" type="edu.develop.leave.model.StudentModel">
+    <id column="student_id" jdbcType="BIGINT" property="studentId" />
+    <result column="role_id" jdbcType="INTEGER" property="roleId" />
+    <result column="class_id" jdbcType="INTEGER" property="classId" />
+    <result column="student_name" jdbcType="VARCHAR" property="studentName" />
+    <result column="student_password" jdbcType="VARCHAR" property="studentPassword" />
+    <association property="classModel" javaType="edu.develop.leave.model.ClassModel">
+      <id column="class_id" jdbcType="INTEGER" property="classId" />
+      <result column="class_name" jdbcType="VARCHAR" property="className" />
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    student_id, role_id, student.class_id, student_name, student_password,class_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from student
+    where student_id = #{studentId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from student
+    where student_id = #{studentId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="student_id" keyProperty="studentId" parameterType="edu.develop.leave.model.StudentModel" useGeneratedKeys="true">
+    insert into student (role_id, class_id, student_name, 
+      student_password)
+    values (#{roleId,jdbcType=INTEGER}, #{classId,jdbcType=INTEGER}, #{studentName,jdbcType=VARCHAR}, 
+      #{studentPassword,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="student_id" keyProperty="studentId" parameterType="edu.develop.leave.model.StudentModel" useGeneratedKeys="true">
+    insert into student
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        role_id,
+      </if>
+      <if test="classId != null">
+        class_id,
+      </if>
+      <if test="studentName != null">
+        student_name,
+      </if>
+      <if test="studentPassword != null">
+        student_password,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="classId != null">
+        #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="studentName != null">
+        #{studentName,jdbcType=VARCHAR},
+      </if>
+      <if test="studentPassword != null">
+        #{studentPassword,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.develop.leave.model.StudentModel">
+    update student
+    <set>
+      <if test="roleId != null">
+        role_id = #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="classId != null">
+        class_id = #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="studentName != null">
+        student_name = #{studentName,jdbcType=VARCHAR},
+      </if>
+      <if test="studentPassword != null">
+        student_password = #{studentPassword,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where student_id = #{studentId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.develop.leave.model.StudentModel">
+    update student
+    set role_id = #{roleId,jdbcType=INTEGER},
+      class_id = #{classId,jdbcType=INTEGER},
+      student_name = #{studentName,jdbcType=VARCHAR},
+      student_password = #{studentPassword,jdbcType=VARCHAR}
+    where student_id = #{studentId,jdbcType=BIGINT}
+  </update>
+  <!--非生成接口-->
+  <!--根据条件查找数据条数-->
+  <select id="queryAmount" resultType="long" >
+    SELECT
+    count(*)
+    FROM
+    `student`
+    <if test="conditions != null">
+      where ${conditions}
+    </if>
+  </select>
+
+  <!--根据条件查找数据-->
+  <select id="queryByCondition" resultMap="BaseResultMap">
+      SELECT
+      student_id,
+      role_id,
+      aliasTable.class_id,
+      student_name,
+      student_password,
+      class_name
+      FROM
+      (SELECT
+      <include refid="Base_Column_List" />
+      FROM
+      `student`,
+      `class`
+      WHERE
+      class.class_id = student.class_id) as aliasTable
+      <if test="conditions != null">
+        WHERE  ${conditions}
+      </if>
+    LIMIT #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+
+  </select>
+
+  <!--批量删除-->
+  <delete id="stuDeletes" parameterType="Long[]">
+    delete from `student` where student_id in
+    <foreach collection="ids" item="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </delete>
+
+  <select id="login" resultType="edu.develop.leave.model.Token">
+      SELECT
+      role_name AS `roleName`,
+      role.role_id as  `roleId`,
+      `no` ,
+      loginData.student_name as `name`
+      FROM role,
+      (SELECT
+      student_id as `no`,
+      role_id,
+      student_name
+      FROM student
+      WHERE
+       student_id = #{no,jdbcType=BIGINT} AND
+       student_password = #{password,jdbcType=VARCHAR}) as loginData
+      WHERE
+      loginData.role_id = role.role_id
+  </select>
+
+
+</mapper>

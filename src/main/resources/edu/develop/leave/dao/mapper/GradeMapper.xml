@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.develop.leave.dao.mapper.GradeMapper">
+  <resultMap id="BaseResultMap" type="edu.develop.leave.model.GradeModel">
+    <id column="grade_id" jdbcType="INTEGER" property="gradeId" />
+    <result column="leader_id" jdbcType="INTEGER" property="leaderId" />
+    <result column="grade_name" jdbcType="VARCHAR" property="gradeName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    grade_id, leader_id, grade_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from grade
+    where grade_id = #{gradeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from grade
+    where grade_id = #{gradeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="grade_id" keyProperty="gradeId" parameterType="edu.develop.leave.model.GradeModel" useGeneratedKeys="true">
+    insert into grade (leader_id, grade_name)
+    values (#{leaderId,jdbcType=INTEGER}, #{gradeName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="grade_id" keyProperty="gradeId" parameterType="edu.develop.leave.model.GradeModel" useGeneratedKeys="true">
+    insert into grade
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="leaderId != null">
+        leader_id,
+      </if>
+      <if test="gradeName != null">
+        grade_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="leaderId != null">
+        #{leaderId,jdbcType=INTEGER},
+      </if>
+      <if test="gradeName != null">
+        #{gradeName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.develop.leave.model.GradeModel">
+    update grade
+    <set>
+      <if test="leaderId != null">
+        leader_id = #{leaderId,jdbcType=INTEGER},
+      </if>
+      <if test="gradeName != null">
+        grade_name = #{gradeName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where grade_id = #{gradeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.develop.leave.model.GradeModel">
+    update grade
+    set leader_id = #{leaderId,jdbcType=INTEGER},
+      grade_name = #{gradeName,jdbcType=VARCHAR}
+    where grade_id = #{gradeId,jdbcType=INTEGER}
+  </update>
+  <!--供通用接口使用-->
+  <!--根据条件查找数据条数-->
+  <select id="queryAmount" resultType="long" >
+    SELECT
+    count(*)
+    FROM
+    `grade`
+    <if test="conditions != null">
+      where ${conditions}
+    </if>
+  </select>
+
+  <!--根据条件查找数据-->
+  <select id="queryByCondition" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM
+    `grade`
+    <if test="conditions != null">
+      where ${conditions}
+    </if>
+    <if test="limit != -1 and limit != -1">
+      limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <delete id="deletes" parameterType="Integer[]">
+    delete from `grade` where grade_id in
+    <foreach collection="ids" item="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </delete>
+</mapper>

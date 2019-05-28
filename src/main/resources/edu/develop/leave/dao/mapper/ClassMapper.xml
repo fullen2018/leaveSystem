@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.develop.leave.dao.mapper.ClassMapper">
+  <resultMap id="BaseResultMap" type="edu.develop.leave.model.ClassModel">
+    <id column="class_id" jdbcType="INTEGER" property="classId" />
+    <result column="teacher_id" jdbcType="INTEGER" property="teacherId" />
+    <result column="grade_id" jdbcType="INTEGER" property="gradeId" />
+    <result column="class_name" jdbcType="VARCHAR" property="className" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    class_id, teacher_id, grade_id, class_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from class
+    where class_id = #{classId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from class
+    where class_id = #{classId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="edu.develop.leave.model.ClassModel">
+    insert into class (class_id, teacher_id, grade_id, 
+      class_name)
+    values (#{classId,jdbcType=INTEGER}, #{teacherId,jdbcType=INTEGER}, #{gradeId,jdbcType=INTEGER}, 
+      #{className,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="edu.develop.leave.model.ClassModel">
+    insert into class
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="classId != null">
+        class_id,
+      </if>
+      <if test="teacherId != null">
+        teacher_id,
+      </if>
+      <if test="gradeId != null">
+        grade_id,
+      </if>
+      <if test="className != null">
+        class_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="classId != null">
+        #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="teacherId != null">
+        #{teacherId,jdbcType=INTEGER},
+      </if>
+      <if test="gradeId != null">
+        #{gradeId,jdbcType=INTEGER},
+      </if>
+      <if test="className != null">
+        #{className,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.develop.leave.model.ClassModel">
+    update class
+    <set>
+      <if test="teacherId != null">
+        teacher_id = #{teacherId,jdbcType=INTEGER},
+      </if>
+      <if test="gradeId != null">
+        grade_id = #{gradeId,jdbcType=INTEGER},
+      </if>
+      <if test="className != null">
+        class_name = #{className,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where class_id = #{classId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.develop.leave.model.ClassModel">
+    update class
+    set teacher_id = #{teacherId,jdbcType=INTEGER},
+      grade_id = #{gradeId,jdbcType=INTEGER},
+      class_name = #{className,jdbcType=VARCHAR}
+    where class_id = #{classId,jdbcType=INTEGER}
+  </update>
+  <!--供通用接口使用-->
+  <!--根据条件查找数据条数-->
+  <select id="queryAmount" resultType="long" >
+    SELECT
+    count(*)
+    FROM
+    `class`
+    <if test="conditions != null">
+      where ${conditions}
+    </if>
+  </select>
+
+  <!--根据条件查找数据-->
+  <select id="queryByCondition" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM
+    `class`
+    <if test="conditions != null">
+      where ${conditions}
+    </if>
+    <if test="limit != -1 and limit != -1">
+      limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <delete id="deletes" parameterType="Integer[]">
+    delete from `class` where class_id in
+    <foreach collection="ids" item="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </delete>
+
+  <!--查询所有的班级-->
+  <select id="findAllClass"   resultType="edu.develop.leave.model.ClassModel">
+      select
+        class_id as classId,class_name as className
+        from
+        `class`
+  </select>
+</mapper>

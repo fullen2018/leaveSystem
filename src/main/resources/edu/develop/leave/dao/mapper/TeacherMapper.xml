@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.develop.leave.dao.mapper.TeacherMapper">
+  <resultMap id="BaseResultMap" type="edu.develop.leave.model.TeacherModel">
+    <id column="teacher_id" jdbcType="INTEGER" property="teacherId" />
+    <result column="class_id" jdbcType="INTEGER" property="classId" />
+    <result column="role_id" jdbcType="INTEGER" property="roleId" />
+    <result column="teacher_name" jdbcType="VARCHAR" property="teacherName" />
+    <result column="teacher_password" jdbcType="VARCHAR" property="teacherPassword" />
+    <association property="clazz" javaType="edu.develop.leave.model.ClassModel">
+      <id column="class_id" jdbcType="INTEGER" property="classId" />
+      <result column="class_name" jdbcType="VARCHAR" property="className" />
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    teacher_id, `class`.class_id, role_id, teacher_name, teacher_password,class_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from teacher
+    where teacher_id = #{teacherId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from teacher
+    where teacher_id = #{teacherId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="teacher_id" keyProperty="teacherId" parameterType="edu.develop.leave.model.TeacherModel" useGeneratedKeys="true">
+    insert into teacher (class_id, role_id, teacher_name, 
+      teacher_password)
+    values (#{classId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, #{teacherName,jdbcType=VARCHAR}, 
+      #{teacherPassword,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="teacher_id" keyProperty="teacherId" parameterType="edu.develop.leave.model.TeacherModel" useGeneratedKeys="true">
+    insert into teacher
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="classId != null">
+        class_id,
+      </if>
+      <if test="roleId != null">
+        role_id,
+      </if>
+      <if test="teacherName != null">
+        teacher_name,
+      </if>
+      <if test="teacherPassword != null">
+        teacher_password,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="classId != null">
+        #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null">
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="teacherName != null">
+        #{teacherName,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherPassword != null">
+        #{teacherPassword,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.develop.leave.model.TeacherModel">
+    update teacher
+    <set>
+      <if test="classId != null">
+        class_id = #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null">
+        role_id = #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="teacherName != null">
+        teacher_name = #{teacherName,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherPassword != null">
+        teacher_password = #{teacherPassword,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where teacher_id = #{teacherId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.develop.leave.model.TeacherModel">
+    update teacher
+    set class_id = #{classId,jdbcType=INTEGER},
+      role_id = #{roleId,jdbcType=INTEGER},
+      teacher_name = #{teacherName,jdbcType=VARCHAR},
+      teacher_password = #{teacherPassword,jdbcType=VARCHAR}
+    where teacher_id = #{id,jdbcType=INTEGER}
+  </update>
+  <!--供通用接口使用-->
+  <!--根据条件查找数据条数-->
+  <select id="queryAmount" resultType="long" >
+    SELECT
+    count(*)
+    FROM
+    `teacher`
+    <if test="conditions != null">
+      where ${conditions}
+    </if>
+  </select>
+
+  <!--根据条件查找数据-->
+  <select id="queryByCondition" resultMap="BaseResultMap">
+    SELECT
+    teacher_id,
+    role_id,
+    aliasTable.class_id,
+    teacher_name,
+    teacher_password,
+    class_name
+    FROM
+    (SELECT
+    <include refid="Base_Column_List" />
+    FROM
+    `teacher`,
+    `class`
+    WHERE
+    class.class_id = teacher.class_id) as aliasTable
+    <if test="conditions != null">
+      where ${conditions}
+    </if>
+    LIMIT #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deletes" parameterType="Integer[]">
+    delete from `teacher` where teacher_id in
+    <foreach collection="ids" item="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </delete>
+
+  <select id="login" resultType="edu.develop.leave.model.Token">
+      SELECT
+      role_name AS `roleName`,
+      role.role_id as  `roleId`,
+      `no` ,
+      loginData.teacher_name as `name`
+      FROM role,
+      (SELECT
+      teacher_id as `no`,
+      role_id,
+      teacher_name
+      FROM teacher
+      WHERE
+        teacher_id = #{no,jdbcType=INTEGER} AND
+       teacher_password = #{password,jdbcType=VARCHAR}) as loginData
+      WHERE
+      loginData.role_id = role.role_id
+  </select>
+</mapper>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>系统参数设置</title>
+    <link href="../../css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="../../resource/bootstrap-3.3.7-dist/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="../../css/orderList.css" rel="stylesheet" type="text/css" media="all"/>
+    <!-- js -->
+    <script src="../../resource/js/jquery.min.js"></script>
+    <!-- //js -->
+    <!-- for-mobile-apps -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+    function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!-- //for-mobile-apps -->
+    <!-- start-smoth-scrolling -->
+    <script type="text/javascript" src="../../js/move-top.js"></script>
+    <script type="text/javascript" src="../../js/easing.js"></script>
+    <script type="text/javascript" src="../../js/dateFormat.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            $(".scroll").click(function(event){
+                event.preventDefault();
+                $('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+            });
+        });
+    </script>
+    <!-- start-smoth-scrolling -->
+</head>
+
+<body>
+<div class="psd">
+    <div class="container">
+        <!-- header -->
+        <div class="header">
+            <div class="logo-right">
+                <span class="menu"><img src="../../images/menu.png" alt=" "/></span>
+            </div>
+            <!-- script for menu -->
+            <script>
+                $( "span.menu" ).click(function() {
+                    $( "ul.nav1" ).slideToggle( 300, function() {
+                        // Animation complete.
+                    });
+                });
+            </script>
+            <!-- //script for menu -->
+        </div>
+        <!-- //header -->
+        <!-- single -->
+        <div style="color:white">
+
+        </div>
+        <div class="single">
+            <div class="clearfix"> </div>
+            <div class="three-com">
+                <div class="leave-comment">
+                    <h3>参数设置</h3>
+                    <div class="modal-body">
+                        <div class="form-group" style="height: 70px;">
+                        <label for="maxDays" >请假最大天数</label>
+                        <input type="number" name="maxDays" class="form-control" id="maxDays" placeholder="最大天数">
+                        </div>
+                        <div class="form-group" style="height:70px">
+                         <label for="teacherDays" >班导审核最大天数</label>
+                        <input type="number" name="teacherDays" class="form-control" id="teacherDays" placeholder="班导审核的最大天数">
+                        </div>
+                        <p>提示：系领导的审核区间是班导师审核的最大天数加一到请假最大天数</p>
+                        <input type="submit" value="返回" class="back"  style="margin-left: 27%; margin-top: 50px;display: inline-block">
+                        <input type="submit" value="提交" id="addSet"  style="margin-left: 10px;margin-top: 50px;display: inline-block">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- single -->
+        <!-- footer -->
+        <div class="footer" style="height: 100px">
+            <div class="footer-left">
+                <ul>
+                    <li><a href="#"></a><span> |</span></li>
+                    <li><p>提供优质的请假服务 <span>0800 (123) 4567 </span></p></li>
+                </ul>
+            </div>
+            <div class="footer-right">
+                <p>Copyright &copy; 2019.NiXteam.</p>
+            </div>
+        </div>
+        <!-- //footer -->
+    </div>
+</div>
+<!-- here stars scrolling icon -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        $.ajax({
+            type:"GET",
+            url:"/tset/list",
+            async:true,
+            dataType: 'json',
+            success:function (data) {
+                doData(data.data);
+            }
+        });
+
+
+
+        $().UItoTop({ easingType: 'easeOutQuart' });
+
+    });
+
+    $('.back').click(function () {
+        window.history.go(-1);
+    });
+
+    function doData(data) {
+        console.log(data);
+
+        for(var i = 0; i < data.length; i++){
+            console.log(data[i]);
+            if(data[i].type == 2){
+               $('#maxDays').val(data[i].content)
+            }else if(data[i].type == 3){
+                $('#teacherDays').val(data[i].content)
+            }
+        }
+
+        // $('#best').val(str);
+    }
+</script>
+<!-- //here ends scrolling icon -->
+</body>
+<script>
+
+    <!--添加设置-->
+    $("#addSet").click(function () {
+        var maxDays = $("#maxDays").val();
+        var teacherDays = $("#teacherDays").val();
+        console.log(maxDays+"::"+teacherDays);
+        if(validateAddSet(maxDays,teacherDays)){
+            $.ajax({
+                type: "put",
+                url: '/tset/update/set',
+                data: {
+                    "maxDays": maxDays,
+                    "teacherDays": teacherDays
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data.code == 200) {
+                        alert("操作成功");
+                    }
+                    else {
+                        alert("操作失败");
+                    }
+                },
+                error: function () {
+                    alert("操作失败");
+                }
+            });
+        }
+    });
+    <!--验证设置-->
+    function validateAddSet(maxDays,teacherDays) {
+        if(maxDays == "" || teacherDays == ""){
+            alert("最大天数和老师的最大天数不为空！")
+            return false;
+        }
+        return true;
+    }
+</script>
+<style>
+    .modal-body  label{
+         float: left;
+    }
+
+    h3{
+        text-align: center;
+    }
+</style>
+</html>

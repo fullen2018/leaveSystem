@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>系领导</title>
+    <link href="../css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="../css/orderList.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="../resource/bootstrap-3.3.7-dist/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="../resource/bootstrap-table/bootstrap-table.css" rel="stylesheet" type="text/css" media="all">
+    <!-- js -->
+    <script src="../resource/js/jquery.min.js"></script>
+    <script src="../resource/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+    <script src="../resource/bootstrap-table/bootstrap-table.js"></script>
+    <script src="../resource/bootstrap-table/bootstrap-table-zh-CN.js"></script>
+    <script src="../js/leaderIndex.js"></script>
+    <script src="../js/loginout.js"></script>
+    <!-- //js -->
+    <!-- for-mobile-apps -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+    function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!-- //for-mobile-apps -->
+    <!-- start-smoth-scrolling -->
+    <script type="text/javascript" src="../js/move-top.js"></script>
+    <script type="text/javascript" src="../js/easing.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            $(".scroll").click(function(event){
+                event.preventDefault();
+                $('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+            });
+        });
+    </script>
+    <!-- start-smoth-scrolling -->
+    <!-- for-portfolio -->
+    <link rel="stylesheet" type="text/css" href="../css/style_common.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style9.css" />
+    <!-- //for-portfolio -->
+</head>
+
+<body>
+
+<div class="psd">
+    <div class="container">
+        <!-- header -->
+        <div class="header">
+            <div class="logo">
+                <h1 style="display: inline-block;color: #FFAE00;margin-left: 20px">假条系统</h1>
+            </div>
+            <div class="logo-right">
+                <span class="menu"><img src="../images/menu.png" alt=" "/></span>
+                <ul class="nav1">
+                    <li class="cap"><a href="#" class="act4">假条列表<span>详情</span></a></li>
+                    <li><a href="notice.html" class="act4">公告<span>详情</span></a></li>
+                    <li><a href="leaderRestPw.html" class="act3">修改密码<span>详情</span></a></li>
+                    <li id="loginout_btn"><a href="" class="act1">退出账号<span>退出</span></a></li>
+                </ul>
+            </div>
+            <div class="clearfix"> </div>
+            <!-- script for menu -->
+            <script>
+                $( "span.menu" ).click(function() {
+                    $( "ul.nav1" ).slideToggle( 300, function() {
+                        // Animation complete.
+                    });
+                });
+            </script>
+            <!-- //script for menu -->
+        </div>
+        <!-- //header -->
+        <!-- portfolio -->
+        <div class="contact">
+            <h3>假条列表</h3>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">查询条件</div>
+                <div class="panel-body">
+                    <form id="formSearch" class="form-horizontal">
+                        <div class="form-group" style="margin-top:15px">
+                            <label class="control-label col-sm-1" for="status">状态</label>
+                            <div class="col-sm-3">
+                                <select name="status" id="statusSelect">
+                                    <option value=>所有</option>
+                                    <option value=1>审核中</option>
+                                    <option value=2>批准</option>
+                                    <option value=3>拒绝</option>
+                                </select>
+                            </div>
+                            <div class="control-label col-sm-4" style="text-align:left;">
+                                <a style="margin-left:50px;" id="btn_query" class=" find_button" >查询</a>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <table id="orderTable">
+
+            </table>
+
+        </div>
+        <!-- //portfolio -->
+        <!-- footer -->
+        <div class="footer">
+            <div class="footer-left">
+                <ul>
+                    <li><a href="#"></a><span> |</span></li>
+                    <li><p>提供优质的请假服务 <span>0800 (123) 4567 </span></p></li>
+                </ul>
+            </div>
+            <div class="footer-right">
+                <p>Copyright &copy; 2019.NiXteam.</p>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+        <!-- //footer -->
+    </div>
+</div>
+<!-- here stars scrolling icon -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        /*
+        var defaults = {
+            containerID: 'toTop', // fading element id
+            containerHoverID: 'toTopHover', // fading element hover id
+            scrollSpeed: 1200,
+            easingType: 'linear'
+        };
+        */
+
+        $().UItoTop({ easingType: 'easeOutQuart' });
+
+    });
+</script>
+<!-- //here ends scrolling icon -->
+
+<div class="modal " id="orderDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">修改</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <label for="leaveId">id</label>
+                    <input type="text" name="leaveId" data-bind="value:leaveId" class="form-control" id="leaveId" placeholder="id">
+                </div>
+                <div class="form-group">
+                    <label for="startTime">开始时间</label>
+                    <input type="text" name="startTime" data-bind="value:startTime" class="form-control" id="startTime" placeholder="开始时间">
+                </div>
+                <div class="form-group">
+                    <label for="endTime">结束时间</label>
+                    <input type="text" name="endTime" data-bind="value:endTime" class="form-control" id="endTime" placeholder="结束时间">
+                </div>
+                <div class="form-group">
+                    <label for="status">状态</label>
+                    <input type="text" name="status" data-bind="value:status" class="form-control" id="status" placeholder="状态">
+                </div>
+                <!--	<div class="form-group">
+                        <label>地址</label>
+                        <input type="text" name="Address" data-bind="value:Address" class="form-control" id="Address" placeholder="地址">
+                    </div>-->
+                <!--<div class="form-group">-->
+                <!--<label>地址</label><br>-->
+                <!--<select class="selectpickerEdit">-->
+
+                <!--</select>-->
+                <!--<input type="text" name="address" data-bind="value:address" class="form-control" id="addressEdit" placeholder="原料商地址">-->
+                <!--</div>-->
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                <button type="button" id="btn_submit" class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--新增-->
+<div class="modal " id="leaveAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabelAdd">新增</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <label for="cause">请假原因</label>
+                    <textarea type="textarea" style="height: 200px" name="cause" class="form-control" id="cause" placeholder="请假原因"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="startTime">请假开始时间</label>
+                    <input type="Date" name="startTime" class="form-control" id="startTimeAdd" placeholder="请假开始的时间">
+                </div>
+                <div class="form-group">
+                    <label for="endTime">请假结束时间</label>
+                    <input type="Date" name="endTime" class="form-control" id="endTimeAdd" placeholder="请假结束时间">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                <button type="button" id="btn_submit_add" class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

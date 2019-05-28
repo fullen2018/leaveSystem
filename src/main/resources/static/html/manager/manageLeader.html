@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>管理领导</title>
+<link href="../../css/style.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../../css/orderList.css" rel="stylesheet" type="text/css" media="all"/>
+<link href="../../resource/bootstrap-3.3.7-dist/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../../resource/bootstrap-table/bootstrap-table.css" rel="stylesheet" type="text/css" media="all">
+<link href="../../css/supplierList.css" rel="stylesheet" type="text/css" media="all"/>
+<!-- js -->
+<script src="../../resource/js/jquery.min.js"></script>
+<script src="../../resource/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+<script src="../../resource/bootstrap-table/bootstrap-table.js"></script>
+<script src="../../resource/bootstrap-table/bootstrap-table-zh-CN.js"></script>
+<script src="../../js/manager/manageLeader.js"></script>
+<script src="../../js/loginout.js"></script>
+
+	<!-- //js -->
+<!-- for-mobile-apps -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+		function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- //for-mobile-apps -->
+<!-- start-smoth-scrolling -->
+<script type="text/javascript" src="../../js/move-top.js"></script>
+<script type="text/javascript" src="../../js/easing.js"></script>
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		$(".scroll").click(function(event){		
+			event.preventDefault();
+			$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+		});
+	});
+</script>
+<!-- start-smoth-scrolling -->
+<link rel="stylesheet" type="text/css" href="../../css/style_common.css" />
+<link rel="stylesheet" type="text/css" href="../../css/style9.css" />
+</head>
+	
+<body>
+	<div class="psd">
+	<div class="container">
+<!-- header -->
+		<div class="header">
+			<div class="logo">
+			<h1 style="display: inline-block;color: #FFAE00;margin-left: 20px">假条系统</h1>
+		    </div>
+			<div class="logo-right">
+				<span class="menu"><img src="../../images/menu.png" alt=" "/></span>
+				<ul class="nav1">
+					<li><a href="manager.html" class="act2">学生管理<span>详情</span></a></li>
+					<li><a href="manageTeacher.html" class="act4">教师管理<span>详情</span></a></li>
+					<li  class="cap" ><a href="#" class="act4">系领导管理<span>详情</span></a></li>
+					<li><a href="leaves.html" class="act4">请假条管理<span>详情</span></a></li>
+					<li><a href="managerNotice.html" class="act4">公告<span>详情</span></a></li>
+					<li><a href="set.html" class="act4">系统设置<span>详情</span></a></li>
+					<li id="loginout_btn"><a href="" class="act1">退出账号<span>退出</span></a></li>
+				</ul>
+			</div>
+			<div class="clearfix"> </div>
+				<!-- script for menu -->
+					<script> 
+						$( "span.menu" ).click(function() {
+						$( "ul.nav1" ).slideToggle( 300, function() {
+						 // Animation complete.
+						});
+						});
+					</script>
+				<!-- //script for menu -->
+		</div>
+<!-- //header -->
+
+	<div class="contact">
+		<h3>系领导列表</h3>
+		<div class="panel panel-default">
+			<div class="panel-heading">查询条件</div>
+			<div class="panel-body" style="height: 130px">
+				<form id="formSearch" class="form-horizontal">
+					<div class="form-group" style="margin-top: 15px">
+						<label class="control-label col-sm-1" for="searName">姓名</label>
+						<div class="col-sm-3">
+							<input type="text" class="form-control" id="searName">
+						</div>
+						<label class="control-label col-sm-1" for="searNo">工作号</label>
+						<div class="col-sm-3">
+							<input type="text" class="form-control" id="searNo">
+						</div>
+						<div class="control-label col-sm-4" style="text-align:left;">
+							<a style="margin-left:50px;" id="btn_query" class="find_button find_button_sty" >查询</a>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<div id="toolbar" class="btn-group">
+			<button id="btn_add" type="button" class="btn btn-default">
+				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+			</button>
+			<button id="btn_edit" type="button" class="btn btn-default">
+				<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
+			</button>
+			<button id="btn_delete" type="button" class="btn btn-default">
+				<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+			</button>
+		</div>
+
+		<table id="supplierTable">
+
+		</table>
+
+	</div>
+
+<!-- footer -->
+	<div class="footer">
+		<div class="footer-left">
+			<ul>
+				<li><a href="#"></a><span> |</span></li>
+				<li><p>提供优质的请假服务 <span>0800 (123) 4567 </span></p></li>
+			</ul>
+		</div>
+		<div class="footer-right">
+			<p>Copyright &copy; 2019.NiXteam.</p>
+		</div>
+		<div class="clearfix"> </div>
+	</div>
+<!-- //footer -->
+	</div>
+	</div>
+<!-- here stars scrolling icon -->
+	<script type="text/javascript">
+            $(document).ready(function() {
+                /*
+                var defaults = {
+                    containerID: 'toTop', // fading element id
+                    containerHoverID: 'toTopHover', // fading element hover id
+                    scrollSpeed: 1200,
+                    easingType: 'linear'
+                };
+                */
+
+                $().UItoTop({ easingType: 'easeOutQuart' });
+
+            });
+	</script>
+<!-- //here ends scrolling icon -->
+
+    <!--新增-->
+	<div class="modal " id="supplierAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">新增</h4>
+				</div>
+				<div class="modal-body">
+
+					<div class="form-group">
+						<label for="leaderName">姓名</label>
+						<input type="text" name="leaderName" class="form-control" id="leaderName" placeholder="学生姓名">
+					</div>
+					<div class="form-group">
+						<label for="password">设置密码</label>
+						<input type="password" name="password" class="form-control" id="password" placeholder="设置密码">
+					</div>
+					<div class="form-group">
+						<label for="repassword">再次输入密码</label>
+						<input type="password" name="repassword" class="form-control" id="repassword" placeholder="再次输入密码">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+					<button type="button" id="btn_submit" class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--编辑-->
+	<div class="modal " id="supplierEdit" tabindex="-1" role="dialog" aria-labelledby="title">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="title">修改</h4>
+				</div>
+				<div class="modal-body">
+
+					<div class="form-group">
+						<label for="leaderNameEdit">姓名</label>
+						<input type="text" name="leaderNameEdit" data-bind="value:leaderName" class="form-control" id="leaderNameEdit" placeholder="学生姓名">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+					<button type="button" id="btn_submit_Edit" class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

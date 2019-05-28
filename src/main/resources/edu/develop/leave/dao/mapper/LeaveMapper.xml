@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.develop.leave.dao.mapper.LeaveMapper">
+  <resultMap id="BaseResultMap" type="edu.develop.leave.model.LeaveModel">
+    <id column="leave_id" jdbcType="INTEGER" property="leaveId" />
+    <result column="student_id" jdbcType="BIGINT" property="studentId" />
+    <result column="cause" jdbcType="VARCHAR" property="cause" />
+    <result column="start_time" jdbcType="DATE" property="startTime" />
+    <result column="end_time" jdbcType="DATE" property="endTime" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="total_day" jdbcType="INTEGER" property="totalDay" />
+    <result column="handler_name" jdbcType="VARCHAR" property="handlerName" />
+    <result column="handler_role" jdbcType="VARCHAR" property="handlerRole" />
+    <result column="handler_time" jdbcType="DATE" property="handlerTime" />
+    <association property="student" javaType="edu.develop.leave.model.StudentModel">
+      <id column="student_id" jdbcType="INTEGER" property="studentId" />
+      <result column="student_name" jdbcType="VARCHAR" property="studentName" />
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    leave_id,limitLeave.student_id,cause, start_time, end_time, `status`, total_day, handler_name,
+    handler_role, handler_time,student_name
+  </sql>
+  <sql id="other_column_list">
+     ,student_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT
+    leave_id,
+    `leave`.student_id,
+    cause,
+    start_time,
+    end_time,
+    `status`,
+    total_day,
+    handler_name,
+    handler_role,
+    handler_time,
+    student_name
+    FROM
+    `leave`,student
+    WHERE
+    student.student_id = `leave`.student_id
+    AND
+    leave_id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `leave`
+    where leave_id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="leave_id" keyProperty="leaveId" parameterType="edu.develop.leave.model.LeaveModel" useGeneratedKeys="true">
+    insert into `leave` (student_id, cause, start_time,
+      end_time, status, total_day, 
+      handler_name, handler_role, handler_time
+      )
+    values (#{studentId,jdbcType=BIGINT}, #{cause,jdbcType=VARCHAR}, #{startTime,jdbcType=DATE}, 
+      #{endTime,jdbcType=DATE}, #{status,jdbcType=INTEGER}, #{totalDay,jdbcType=INTEGER}, 
+      #{handlerName,jdbcType=VARCHAR}, #{handlerRole,jdbcType=VARCHAR}, #{handlerTime,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="leave_id" keyProperty="leaveId" parameterType="edu.develop.leave.model.LeaveModel" useGeneratedKeys="true">
+    insert into `leave`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="studentId != null">
+        student_id,
+      </if>
+      <if test="cause != null">
+        cause,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="totalDay != null">
+        total_day,
+      </if>
+      <if test="handlerName != null">
+        handler_name,
+      </if>
+      <if test="handlerRole != null">
+        handler_role,
+      </if>
+      <if test="handlerTime != null">
+        handler_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="studentId != null">
+        #{studentId,jdbcType=BIGINT},
+      </if>
+      <if test="cause != null">
+        #{cause,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=DATE},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=DATE},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="totalDay != null">
+        #{totalDay,jdbcType=INTEGER},
+      </if>
+      <if test="handlerName != null">
+        #{handlerName,jdbcType=VARCHAR},
+      </if>
+      <if test="handlerRole != null">
+        #{handlerRole,jdbcType=VARCHAR},
+      </if>
+      <if test="handlerTime != null">
+        #{handlerTime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.develop.leave.model.LeaveModel">
+    update `leave`
+    <set>
+      <if test="studentId != null">
+        student_id = #{studentId,jdbcType=BIGINT},
+      </if>
+      <if test="cause != null">
+        cause = #{cause,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=DATE},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=DATE},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="totalDay != null">
+        total_day = #{totalDay,jdbcType=INTEGER},
+      </if>
+      <if test="handlerName != null">
+        handler_name = #{handlerName,jdbcType=VARCHAR},
+      </if>
+      <if test="handlerRole != null">
+        handler_role = #{handlerRole,jdbcType=VARCHAR},
+      </if>
+      <if test="handlerTime != null">
+        handler_time = #{handlerTime,jdbcType=DATE},
+      </if>
+    </set>
+    where leave_id = #{leaveId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.develop.leave.model.LeaveModel">
+    update `leave`
+    set student_id = #{studentId,jdbcType=BIGINT},
+      cause = #{cause,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=DATE},
+      end_time = #{endTime,jdbcType=DATE},
+      status = #{status,jdbcType=INTEGER},
+      total_day = #{totalDay,jdbcType=INTEGER},
+      handler_name = #{handlerName,jdbcType=VARCHAR},
+      handler_role = #{handlerRole,jdbcType=VARCHAR},
+      handler_time = #{handlerTime,jdbcType=DATE}
+    where leave_id = #{leaveId,jdbcType=INTEGER}
+  </update>
+
+  <!--非生成接口-->
+  <!--根据条件查找数据条数-->
+  <select id="queryAmount" resultType="long" >
+    SELECT
+    count(*)
+    FROM
+    `leave`
+    <if test="conditions != null">
+      where ${conditions}
+    </if>
+  </select>
+
+  <!--根据条件查找数据-->
+  <select id="queryByCondition" resultMap="BaseResultMap">
+    SELECT
+    leave_id,
+    <include refid="Base_Column_List" />
+    FROM
+    (
+    SELECT
+    *
+    FROM
+    `leave`
+    <if test="conditions != null">
+      where ${conditions}
+    </if>
+    ) as limitLeave,
+    student
+    WHERE
+    limitLeave.student_id = student.student_id
+    <if test="limit != -1 and limit != -1">
+      limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <!--老师根据条件查找数据-->
+  <select id="teacherSlist" resultMap="BaseResultMap">
+    select
+       *
+    from
+    (SELECT
+        leave_id,
+        limit_stu.student_id,
+        cause,
+        start_time,
+        end_time,
+        `status`,
+        total_day,
+        handler_name,
+        handler_role,
+        handler_time,
+        student_name
+    FROM
+    (SELECT
+    student.student_id,student_name
+    FROM
+    student
+    WHERE
+    student.class_id =
+    (SELECT
+    class_id
+    FROM
+    teacher
+    WHERE
+    teacher_id = #{teacherId,jdbcType=INTEGER})) as limit_stu
+    inner JOIN(
+    SELECT
+        leave_id,
+        student_id,
+        cause,
+        start_time,
+        end_time,
+        `status`,
+        total_day,
+        handler_name,
+        handler_role,
+        handler_time
+    FROM
+    `leave`
+    <if test="conditions != null">
+      where ${conditions}
+    </if>
+    ) as condt_stu
+    ON
+    `condt_stu`.student_id = limit_stu.student_id) as liTable
+    where
+       liTable.total_day between 1 and #{endIndex,jdbcType=INTEGER}
+    <if test="limit != -1 and limit != -1">
+      limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <!--领导根据条件查找数据-->
+  <select id="leaderSlist" resultMap="BaseResultMap">
+    SELECT
+        leave_id,
+        limitTable.student_id,
+        cause,
+        start_time,
+        end_time,
+        `status`,
+        total_day,
+        handler_name,
+        handler_role,
+        handler_time,
+        student_name,
+        student_name
+FROM
+(SELECT
+				`leave`.leave_id,
+				`leave`.student_id,
+				`leave`.cause,
+				`leave`.start_time,
+				`leave`.end_time,
+				`leave`.`status`,
+				`leave`.total_day,
+				`leave`.handler_name,
+				`leave`.handler_role,
+				`leave`.handler_time,
+                `student`.student_name
+			FROM
+				`leave`
+    LEFT JOIN student
+         ON student.student_id = `leave`.student_id) as limitTable
+         where total_day between
+        #{startIndex,jdbcType=INTEGER}
+        and
+         #{endIndex,jdbcType=INTEGER}
+        <if test="conditions != null">
+          and ${conditions}
+        </if>
+    <if test="limit != -1 and limit != -1">
+      limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+    </if>
+
+  </select>
+
+  <!--批量删除-->
+  <delete id="deletes" parameterType="Integer[]">
+    delete from `leave` where leave_id in
+    <foreach collection="ids" item="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </delete>
+
+  <!--老师查询数据条数-->
+  <select id="teacherGetAmount" resultType="long" >
+    SELECT
+    count(*)
+    FROM
+    `leave`
+    where total_day between 1 and #{endIndex,jdbcType=INTEGER}
+    <if test="sql != null">
+      and ${sql}
+    </if>
+  </select>
+
+  <!--系领导查询数据条数-->
+  <select id="leaderGetAmount" resultType="long" >
+    SELECT
+    count(*)
+    FROM
+    `leave`
+    where total_day between
+    #{startIndex,jdbcType=INTEGER}
+    and
+    #{endIndex,jdbcType=INTEGER}
+    <if test="sql != null">
+      and ${sql}
+    </if>
+  </select>
+</mapper>

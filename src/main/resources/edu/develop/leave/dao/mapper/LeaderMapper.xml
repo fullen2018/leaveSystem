@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.develop.leave.dao.mapper.LeaderMapper">
+  <resultMap id="BaseResultMap" type="edu.develop.leave.model.LeaderModel">
+    <id column="leader_id" jdbcType="INTEGER" property="leaderId" />
+    <result column="role_id" jdbcType="INTEGER" property="roleId" />
+    <result column="leader_name" jdbcType="VARCHAR" property="leaderName" />
+    <result column="leader_password" jdbcType="VARCHAR" property="leaderPassword" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    leader_id, role_id, leader_name, leader_password
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from leader
+    where leader_id = #{leaderId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from leader
+    where leader_id = #{leaderId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="leader_id" keyProperty="leaderId" parameterType="edu.develop.leave.model.LeaderModel" useGeneratedKeys="true">
+    insert into leader (role_id, leader_name, leader_password
+      )
+    values (#{roleId,jdbcType=INTEGER}, #{leaderName,jdbcType=VARCHAR}, #{leaderPassword,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="leader_id" keyProperty="leaderId" parameterType="edu.develop.leave.model.LeaderModel" useGeneratedKeys="true">
+    insert into leader
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        role_id,
+      </if>
+      <if test="leaderName != null">
+        leader_name,
+      </if>
+      <if test="leaderPassword != null">
+        leader_password,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="leaderName != null">
+        #{leaderName,jdbcType=VARCHAR},
+      </if>
+      <if test="leaderPassword != null">
+        #{leaderPassword,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.develop.leave.model.LeaderModel">
+    update leader
+    <set>
+      <if test="roleId != null">
+        role_id = #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="leaderName != null">
+        leader_name = #{leaderName,jdbcType=VARCHAR},
+      </if>
+      <if test="leaderPassword != null">
+        leader_password = #{leaderPassword,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where leader_id = #{leaderId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.develop.leave.model.LeaderModel">
+    update leader
+    set role_id = #{roleId,jdbcType=INTEGER},
+      leader_name = #{leaderName,jdbcType=VARCHAR},
+      leader_password = #{leaderPassword,jdbcType=VARCHAR}
+    where leader_id = #{leaderId,jdbcType=INTEGER}
+  </update>
+
+  <!--供通用接口使用-->
+  <!--根据条件查找数据条数-->
+  <select id="queryAmount" resultType="long" >
+    SELECT
+    count(*)
+    FROM
+    `leader`
+    <if test="conditions != null">
+      where ${conditions}
+    </if>
+  </select>
+
+  <!--根据条件查找数据-->
+  <select id="queryByCondition" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM
+    `leader`
+    <if test="conditions != null">
+      where ${conditions}
+    </if>
+    <if test="limit != -1 and limit != -1">
+      limit #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <delete id="deletes" parameterType="Integer[]">
+    delete from `leader` where leader_id in
+    <foreach collection="ids" item="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </delete>
+
+  <select id="login" resultType="edu.develop.leave.model.Token">
+      SELECT
+      role_name AS `roleName`,
+      role.role_id as  `roleId`,
+      `no` ,
+      loginData.leader_name as `name`
+      FROM role,
+      (SELECT
+      leader_id as `no`,
+      role_id,
+      leader_name
+      FROM leader
+      WHERE
+        leader_id = #{no,jdbcType=INTEGER} AND
+       leader_password = #{password,jdbcType=VARCHAR}) as loginData
+      WHERE
+      loginData.role_id = role.role_id
+  </select>
+</mapper>
