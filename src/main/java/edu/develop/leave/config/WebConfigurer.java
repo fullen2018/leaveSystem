@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.*;
  * @since jdk8
  */
 
-@Component
+//@Component
 public class WebConfigurer extends WebMvcConfigurerAdapter {
 
     @Autowired
